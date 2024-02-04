@@ -4,9 +4,13 @@ class Stats():
     def __init__(self):
         """Initialization stats"""
         self.reset_stats()
+        self.run_game = True
+        with open('highscore.txt', 'r') as f:
+            self.high_score = int(f.readline())
 
     def reset_stats(self):
         """Changing stats"""
-        self.ships_left = 3
+        self.ships_left = 2
+        self.score = 0
 
         
