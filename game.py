@@ -22,8 +22,8 @@ def run():
         controls.events(screen, ship, bullets)
         ship.update_ship()
         controls.update(bg_color, screen, ship, alien, bullets)
-        controls.update_bullets(bullets)
-        controls.update_aliens(alien)
+        controls.update_bullets(alien, bullets)
+        controls.update_aliens(ship, alien)
 
 
 run()

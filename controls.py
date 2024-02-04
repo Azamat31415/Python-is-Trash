@@ -41,16 +41,21 @@ def update(bg_color, screen, ship, aliens, bullets):
     pygame.display.flip()
 
 
-def update_bullets(bullets):
+def update_bullets(aliens, bullets):
     """Updating the bullets position"""
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
 
-def update_aliens(aliens):
+    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+
+
+def update_aliens(ship, aliens):
     """Updating the aliens position"""
     aliens.update()
+    if pygame.sprite.spritecollideany(ship, aliens):
+        print('!!!')
 
 
 def create_army(screen, aliens):
