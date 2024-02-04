@@ -2,6 +2,7 @@ import pygame
 import sys
 from bullet import Bullet
 from alien import Alien
+import time
 
 def events(screen, ship, bullets):
     """Event processing"""
@@ -41,21 +42,39 @@ def update(bg_color, screen, ship, aliens, bullets):
     pygame.display.flip()
 
 
-def update_bullets(aliens, bullets):
+def update_bullets(screen, aliens, bullets):
     """Updating the bullets position"""
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
-
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    if len(aliens) == 0:
+        bullets.empty()
+        create_army(screen, aliens)
 
+def ship_kill(stats, screen, ship, aliens, bullets):
+    """The clash of the army and the ship"""
+    stats.ships_left -= 1
+    aliens.empty()
+    bullets.empty()
+    create_army(screen, aliens)
+    ship.create_ship()
+    time.sleep(1)
 
-def update_aliens(ship, aliens):
+def update_aliens(stats, screen, ship, aliens, bullets):
     """Updating the aliens position"""
     aliens.update()
     if pygame.sprite.spritecollideany(ship, aliens):
-        print('!!!')
+        ship_kill(stats, screen, ship, aliens, bullets)
+    aliens_check(stats, screen, ship, aliens, bullets)
+
+def aliens_check(stats, screen, ship, aliens, bullets):
+    """Checking the passage of the army to the end of the screen"""
+    screen_rect = screen.get_rect()
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= screen_rect.bottom:
+            ship_kill(stats, screen, ship, aliens, bullets)
 
 
 def create_army(screen, aliens):
