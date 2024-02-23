@@ -7,11 +7,42 @@ from stats import Stats
 from scores import Scores
 
 
+def main_menu(screen):
+    background_image = pygame.image.load('images/space.jpg')
+
+    while True:
+        screen.blit(background_image, (0, 0))
+
+        font = pygame.font.Font(None, 64)
+        text = font.render("Space Defender", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
+        screen.blit(text, text_rect)
+
+        start_button = pygame.Rect(screen.get_width() // 2 - 100, screen.get_height() // 2 + 50, 200, 50)
+        pygame.draw.rect(screen, (0, 255, 0), start_button)
+        font = pygame.font.Font(None, 36)
+        text = font.render("Start game", True, (0, 0, 0))
+        text_rect = text.get_rect(center=start_button.center)
+        screen.blit(text, text_rect)
+
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if start_button.collidepoint(event.pos):
+                    return
+
 def run():
     pygame.init()
     screen = pygame.display.set_mode((700, 800))
     pygame.display.set_caption("Space Defender")
     icon = pygame.image.load('images/rocket.jpg')
+    pygame.mixer.music.load('sounds/kanye.mp3')
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.1)
     pygame.display.set_icon(icon)
     bg_color = (23, 13, 52)
     ship = Ship(screen)
@@ -21,13 +52,15 @@ def run():
     stats = Stats()
     sc = Scores(screen, stats)
 
+    main_menu(screen)
+
     while True:
         controls.events(screen, ship, bullets)
         if stats.run_game:
             ship.update_ship()
             controls.update(bg_color, screen, stats, sc, ship, alien, bullets)
             controls.update_bullets(screen, stats, sc, alien, bullets)
-            controls.update_aliens(stats, screen, sc,  ship, alien, bullets)
+            controls.update_aliens(stats, screen, sc, ship, alien, bullets)
 
 
 run()
