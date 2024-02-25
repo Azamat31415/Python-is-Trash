@@ -5,14 +5,13 @@ from ship import Ship
 from pygame.sprite import Group
 from stats import Stats
 from scores import Scores
-
+import sys
 
 def main_menu(screen):
     background_image = pygame.image.load('images/space.jpg')
 
     while True:
         screen.blit(background_image, (0, 0))
-
         font = pygame.font.Font(None, 64)
         text = font.render("Space Defender", True, (255, 255, 255))
         text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
@@ -25,15 +24,24 @@ def main_menu(screen):
         text_rect = text.get_rect(center=start_button.center)
         screen.blit(text, text_rect)
 
+        quit_button = pygame.Rect(screen.get_width() // 2 - 100, screen.get_height() // 2 + 120, 200, 50)
+        pygame.draw.rect(screen, (255, 0, 0), quit_button)
+        text = font.render("Quit", True, (0, 0, 0))
+        text_rect = text.get_rect(center=quit_button.center)
+        screen.blit(text, text_rect)
+
         pygame.display.flip()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                return
+                sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.collidepoint(event.pos):
                     return
+                elif quit_button.collidepoint(event.pos):
+                    pygame.quit()
+                    sys.exit()
 
 def run():
     pygame.init()
@@ -61,6 +69,5 @@ def run():
             controls.update(bg_color, screen, stats, sc, ship, alien, bullets)
             controls.update_bullets(screen, stats, sc, alien, bullets)
             controls.update_aliens(stats, screen, sc, ship, alien, bullets)
-
 
 run()

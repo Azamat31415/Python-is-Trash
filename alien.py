@@ -21,5 +21,5 @@ class Alien(pygame.sprite.Sprite):
 
     def update(self):
         """Moving the aliens"""
-        self.y += 0.1
+        self.y += 1
         self.rect.y = self.y
