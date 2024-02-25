@@ -24,9 +24,9 @@ class Ship(Sprite):
     def update_ship(self):
         """Updating the ship position"""
         if self.mright and self.rect.right < self.screen_rect.right:
-            self.center += 1.5
+            self.center += 0.5
         if self.mleft and self.rect.left > 0:
-            self.center -= 1.5
+            self.center -= 0.5
 
         self.rect.centerx = self.center
 

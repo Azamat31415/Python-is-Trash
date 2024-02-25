@@ -3,6 +3,7 @@ import sys
 from bullet import Bullet
 from alien import Alien
 import time
+import random
 
 def events(screen, ship, bullets):
     """Event processing"""
@@ -58,7 +59,7 @@ def update_bullets(screen, stats, sc, aliens, bullets):
         sc.image_ships()
     if len(aliens) == 0:
         bullets.empty()
-        create_army(screen, aliens)
+        create_army(screen, aliens, 3)
 
 def ship_kill(stats, screen, sc, ship, aliens, bullets):
     """The clash of the army and the ship"""
@@ -67,12 +68,13 @@ def ship_kill(stats, screen, sc, ship, aliens, bullets):
         sc.image_ships()
         aliens.empty()
         bullets.empty()
-        create_army(screen, aliens)
+        create_army(screen, aliens, 3)
         ship.create_ship()
         time.sleep(1)
     else:
         stats.run_game = False
         sys.exit()
+        game_over_screen(screen)
 
 def update_aliens(stats, screen, sc, ship, aliens, bullets):
     """Updating the aliens position"""
@@ -88,22 +90,24 @@ def aliens_check(stats, screen, sc, ship, aliens, bullets):
         if alien.rect.bottom >= screen_rect.bottom:
             ship_kill(stats, screen, sc, ship, aliens, bullets)
 
-
-def create_army(screen, aliens):
+def create_army(screen, aliens, number_alien_y):
     """Create army of aliens"""
     alien = Alien(screen)
     alien_width = alien.rect.width
-    number_alien_x = int((700 - 2 * alien_width) / alien_width)
     alien_height = alien.rect.height
-    number_alien_y = int((800 - 100 - 2 * alien_height) / alien_height)
+    screen_center_x = screen.get_rect().centerx
+    screen_center_y = screen.get_rect().centery
 
-    for row_number in range(number_alien_y - 1):
+    number_alien_x = 5
+    for row_number in range(number_alien_y):
         for alien_number in range(number_alien_x):
             alien = Alien(screen)
-            alien.x = alien_width + (alien_width * alien_number)
-            alien.y = alien_height + (alien_height * row_number)
+            offset_x = random.randint(-screen_center_x // 2, screen_center_x // 2)
+            offset_y = random.randint(-screen_center_y // 2, -screen_center_y // 4)
+            alien.x = screen_center_x + offset_x - (alien_width * number_alien_x) / 2 + (alien_width * alien_number)
+            alien.y = screen_center_y + offset_y - (alien_height * number_alien_y) / 2 + (alien_height * row_number)
             alien.rect.x = alien.x
-            alien.rect.y = alien.rect.height + (alien.rect.height * row_number)
+            alien.rect.y = alien.y
             aliens.add(alien)
 
 def check_high_score(stats, sc):

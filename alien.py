@@ -1,4 +1,5 @@
 import pygame
+import random
 
 
 class Alien(pygame.sprite.Sprite):
@@ -21,5 +22,7 @@ class Alien(pygame.sprite.Sprite):
 
     def update(self):
         """Moving the aliens"""
-        self.y += 1
+        self.x += random.randint(-1, 1)
+        self.y += random.uniform(0.1, 0.5) * 0.5
+        self.rect.x = self.x
         self.rect.y = self.y
