@@ -33,6 +33,7 @@ def events(screen, ship, bullets):
                 ship.mleft = False
 
 
+
 def update(bg_color, screen, stats, sc, ship, aliens, bullets):
     """Screen update"""
     screen.fill(bg_color)
@@ -59,7 +60,7 @@ def update_bullets(screen, stats, sc, aliens, bullets):
         sc.image_ships()
     if len(aliens) == 0:
         bullets.empty()
-        create_army(screen, aliens, 3)
+        create_army(screen, aliens, 1)
 
 def ship_kill(stats, screen, sc, ship, aliens, bullets):
     """The clash of the army and the ship"""
@@ -68,7 +69,7 @@ def ship_kill(stats, screen, sc, ship, aliens, bullets):
         sc.image_ships()
         aliens.empty()
         bullets.empty()
-        create_army(screen, aliens, 3)
+        create_army(screen, aliens, 1)
         ship.create_ship()
         time.sleep(1)
     else:
@@ -117,3 +118,4 @@ def check_high_score(stats, sc):
         sc.image_high_score()
         with open('highscore.txt', 'w') as f:
             f.write(str(stats.high_score))
+
