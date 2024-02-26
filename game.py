@@ -91,7 +91,7 @@ def run():
     ship = Ship(screen)
     bullets = Group()
     aliens = Group()
-    controls.create_army(screen, aliens, 3)
+    controls.create_army(screen, aliens, 1)
     stats = Stats()
     sc = Scores(screen, stats)
 

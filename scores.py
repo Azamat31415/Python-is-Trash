@@ -36,6 +36,7 @@ class Scores():
         self.ships = Group()
         for ship_number in range(self.stats.ships_left):
             ship = Ship(self.screen)
+            ship.image = pygame.transform.scale(ship.image, (75 / 2, 85 / 2))
             ship.rect.x = 15 + (ship_number * ship.rect.width)
             ship.rect.y = 20
             self.ships.add(ship)
