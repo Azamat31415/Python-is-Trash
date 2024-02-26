@@ -1,17 +1,20 @@
-import pygame
-from pygame.examples import aliens
-import controls
-from ship import Ship
-from pygame.sprite import Group
-from stats import Stats
-from scores import Scores
+import math
 import sys
 
+import pygame
+from pygame.sprite import Group
+
+import controls
+from scores import Scores
+from ship import Ship
+from stats import Stats
+
+
 def main_menu(screen):
-    background_image = pygame.image.load('images/space.jpg')
+    bg = pygame.image.load('images/space.jpg')
 
     while True:
-        screen.blit(background_image, (0, 0))
+        screen.blit(bg, (0, 0))
         font = pygame.font.Font(None, 64)
         text = font.render("Space Defender", True, (255, 255, 255))
         text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
@@ -44,10 +47,10 @@ def main_menu(screen):
                     sys.exit()
 
 def game_over_screen(screen):
-    background_image = pygame.image.load('images/space.jpg')
+    bg = pygame.image.load('images/space.jpg')
 
     while True:
-        screen.blit(background_image, (0, 0))
+        screen.blit(bg, (0, 0))
 
         font = pygame.font.Font(None, 64)
         text = font.render("Game Over", True, (255, 255, 255))
@@ -87,7 +90,10 @@ def run():
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.1)
     pygame.display.set_icon(icon)
-    bg_color = (23, 13, 52)
+    bg = pygame.image.load('images/bg.png')
+    bg_height = bg.get_height()
+    bgs = math.ceil(bg_height / 700)
+    scroll = 0
     ship = Ship(screen)
     bullets = Group()
     aliens = Group()
@@ -100,8 +106,16 @@ def run():
     while True:
         controls.events(screen, ship, bullets, stats)
         if stats.run_game:
+            for i in range(0, bgs):
+                screen.blit(bg, (0, -1 * i * bg_height + scroll))
+
+            scroll += 2
+
+            if abs(scroll) > bg_height:
+                scroll = 0
+
             ship.update_ship()
-            controls.update(bg_color, screen, stats, sc, ship, aliens, bullets)
+            controls.update(screen, sc, ship, aliens, bullets)
             controls.update_bullets(screen, stats, sc, aliens, bullets)
             controls.update_aliens(stats, screen, sc, ship, aliens, bullets)
         else:
@@ -113,5 +127,6 @@ def run():
             if response == "restart":
                 stats.run_game = True
                 stats.reset_stats()
+                stats.ships_left += 1
 
 run()

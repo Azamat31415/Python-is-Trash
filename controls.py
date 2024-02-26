@@ -1,3 +1,5 @@
+import math
+
 import pygame
 import sys
 
@@ -34,9 +36,8 @@ def events(screen, ship, bullets, stats):
                 ship.mleft = False
 
 
-def update(bg_color, screen, stats, sc, ship, aliens, bullets):
+def update(screen, sc, ship, aliens, bullets):
     """Screen update"""
-    screen.fill(bg_color)
     sc.show_score()
     for bullet in bullets.sprites():
         bullet.draw_bullet()
@@ -104,7 +105,7 @@ def create_army(screen, aliens, number_alien_y):
         for alien_number in range(number_alien_x):
             alien = Alien(screen)
             offset_x = random.randint(-screen_center_x // 2, screen_center_x // 2)
-            offset_y = random.randint(-screen_center_y // 2, -screen_center_y // 4)
+            offset_y = random.randint(-screen_center_y // 1, -screen_center_y // 2)
             alien.x = screen_center_x + offset_x - (alien_width * number_alien_x) / 2 + (alien_width * alien_number)
             alien.y = screen_center_y + offset_y - (alien_height * number_alien_y) / 2 + (alien_height * row_number)
             alien.rect.x = alien.x
