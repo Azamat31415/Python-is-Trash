@@ -1,11 +1,12 @@
 import pygame
 import sys
+
 from bullet import Bullet
 from alien import Alien
 import time
 import random
 
-def events(screen, ship, bullets):
+def events(screen, ship, bullets, stats):
     """Event processing"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -31,7 +32,6 @@ def events(screen, ship, bullets):
             # Left
             elif event.key == pygame.K_LEFT:
                 ship.mleft = False
-
 
 
 def update(bg_color, screen, stats, sc, ship, aliens, bullets):
@@ -64,6 +64,8 @@ def update_bullets(screen, stats, sc, aliens, bullets):
 
 def ship_kill(stats, screen, sc, ship, aliens, bullets):
     """The clash of the army and the ship"""
+    ship.mright = False
+    ship.mleft = False
     if stats.ships_left > 0:
         stats.ships_left -= 1
         sc.image_ships()
@@ -71,11 +73,9 @@ def ship_kill(stats, screen, sc, ship, aliens, bullets):
         bullets.empty()
         create_army(screen, aliens, 1)
         ship.create_ship()
-        time.sleep(1)
+        time.sleep(0)
     else:
         stats.run_game = False
-        sys.exit()
-        game_over_screen(screen)
 
 def update_aliens(stats, screen, sc, ship, aliens, bullets):
     """Updating the aliens position"""

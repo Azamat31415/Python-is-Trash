@@ -71,13 +71,11 @@ def game_over_screen(screen):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
                 return "quit"
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if restart_button.collidepoint(event.pos):
                     return "restart"
                 elif quit_button.collidepoint(event.pos):
-                    pygame.quit()
                     return "quit"
 
 def run():
@@ -100,11 +98,20 @@ def run():
     main_menu(screen)
 
     while True:
-        controls.events(screen, ship, bullets)
+        controls.events(screen, ship, bullets, stats)
         if stats.run_game:
             ship.update_ship()
             controls.update(bg_color, screen, stats, sc, ship, aliens, bullets)
             controls.update_bullets(screen, stats, sc, aliens, bullets)
             controls.update_aliens(stats, screen, sc, ship, aliens, bullets)
+        else:
+            response = game_over_screen(screen)
+
+            if response == "quit":
+                pygame.quit()
+                sys.exit()
+            if response == "restart":
+                stats.run_game = True
+                stats.reset_stats()
 
 run()
