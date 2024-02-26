@@ -100,7 +100,7 @@ def create_army(screen, aliens, number_alien_y):
     screen_center_x = screen.get_rect().centerx
     screen_center_y = screen.get_rect().centery
 
-    number_alien_x = 7
+    number_alien_x = 10
     for row_number in range(number_alien_y):
         for alien_number in range(number_alien_x):
             alien = Alien(screen)
